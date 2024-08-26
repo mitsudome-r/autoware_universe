@@ -17,6 +17,7 @@
 
 #include <rclcpp/qos.hpp>
 
+#include <autoware_map_msgs/msg/lanelet_map_meta_data.hpp>
 #include <autoware_map_msgs/msg/map_projector_info.hpp>
 
 namespace autoware::component_interface_specs_universe::map
@@ -31,6 +32,15 @@ struct MapProjectorInfo
   static constexpr auto durability = RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL;
 };
 
-}  // namespace autoware::component_interface_specs_universe::map
+struct LaneletMapMetaData
+{
+  using Message = autoware_map_msgs::msg::LaneletMapMetaData;
+  static constexpr char name[] = "/map/lanelet_map_meta_data";
+  static constexpr size_t depth = 1;
+  static constexpr auto reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;
+  static constexpr auto durability = RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL;
+};
+
+}  // namespace map_interface
 
 #endif  // AUTOWARE__COMPONENT_INTERFACE_SPECS_UNIVERSE__MAP_HPP_
