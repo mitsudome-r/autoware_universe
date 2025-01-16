@@ -19,7 +19,7 @@
 
 #include <pcl_conversions/pcl_conversions.h>
 
-namespace autoware::ground_segmentation
+namespace autoware::ground_segmentation_universe
 {
 using PointCloud2ConstPtr = sensor_msgs::msg::PointCloud2::ConstSharedPtr;
 
@@ -64,6 +64,6 @@ private:
   bool data_offset_initialized_ = false;
 };
 
-}  // namespace autoware::ground_segmentation
+}  // namespace autoware::ground_segmentation_universe
 
 #endif  // SCAN_GROUND_FILTER__DATA_HPP_

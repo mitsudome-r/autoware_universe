@@ -21,7 +21,7 @@
 #include <memory>
 #include <vector>
 
-namespace autoware::ground_segmentation
+namespace autoware::ground_segmentation_universe
 {
 
 // assign the pointcloud data to the grid
@@ -492,4 +492,4 @@ void GridGroundFilter::process(
   classify(out_no_ground_indices);
 }
 
-}  // namespace autoware::ground_segmentation
+}  // namespace autoware::ground_segmentation_universe

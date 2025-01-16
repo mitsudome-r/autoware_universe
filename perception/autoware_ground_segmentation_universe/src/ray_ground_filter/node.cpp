@@ -35,7 +35,7 @@
 #include <string>
 #include <vector>
 
-namespace autoware::ground_segmentation
+namespace autoware::ground_segmentation_universe
 {
 using autoware::pointcloud_preprocessor::get_param;
 using autoware::universe_utils::ScopedTimeTrack;
@@ -267,8 +267,8 @@ void RayGroundFilterComponent::ClassifyPointCloud(
 //   // Enable the dynamic reconfigure service
 //   has_service = true;
 //   srv_ = boost::make_shared<
-//     dynamic_reconfigure::Server<autoware::ground_segmentation::RayGroundFilterConfig> >(nh);
-//   dynamic_reconfigure::Server<autoware::ground_segmentation::RayGroundFilterConfig>::CallbackType
+//     dynamic_reconfigure::Server<autoware::ground_segmentation_universe::RayGroundFilterConfig> >(nh);
+//   dynamic_reconfigure::Server<autoware::ground_segmentation_universe::RayGroundFilterConfig>::CallbackType
 //   f =
 //     boost::bind(&RayGroundFilterComponent::config_callback, this, _1, _2);
 //   srv_->setCallback(f);
@@ -419,7 +419,7 @@ rcl_interfaces::msg::SetParametersResult RayGroundFilterComponent::paramCallback
   return result;
 }
 
-}  // namespace autoware::ground_segmentation
+}  // namespace autoware::ground_segmentation_universe
 
 #include <rclcpp_components/register_node_macro.hpp>
-RCLCPP_COMPONENTS_REGISTER_NODE(autoware::ground_segmentation::RayGroundFilterComponent)
+RCLCPP_COMPONENTS_REGISTER_NODE(autoware::ground_segmentation_universe::RayGroundFilterComponent)

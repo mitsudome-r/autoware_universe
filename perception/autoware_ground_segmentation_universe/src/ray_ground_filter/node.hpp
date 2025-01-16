@@ -82,7 +82,7 @@ namespace bg = boost::geometry;
 using Point = bg::model::d2::point_xy<double>;
 using Polygon = bg::model::polygon<Point>;
 
-namespace autoware::ground_segmentation
+namespace autoware::ground_segmentation_universe
 {
 class RayGroundFilterComponent : public autoware::pointcloud_preprocessor::Filter
 {
@@ -213,6 +213,6 @@ public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   explicit RayGroundFilterComponent(const rclcpp::NodeOptions & options);
 };
-}  // namespace autoware::ground_segmentation
+}  // namespace autoware::ground_segmentation_universe
 
 #endif  // RAY_GROUND_FILTER__NODE_HPP_

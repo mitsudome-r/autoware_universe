@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-namespace autoware::ground_segmentation
+namespace autoware::ground_segmentation_universe
 {
 using autoware::pointcloud_preprocessor::get_param;
 using autoware::universe_utils::calcDistance3d;
@@ -446,7 +446,7 @@ rcl_interfaces::msg::SetParametersResult ScanGroundFilterComponent::onParameter(
   return result;
 }
 
-}  // namespace autoware::ground_segmentation
+}  // namespace autoware::ground_segmentation_universe
 
 #include <rclcpp_components/register_node_macro.hpp>
-RCLCPP_COMPONENTS_REGISTER_NODE(autoware::ground_segmentation::ScanGroundFilterComponent)
+RCLCPP_COMPONENTS_REGISTER_NODE(autoware::ground_segmentation_universe::ScanGroundFilterComponent)

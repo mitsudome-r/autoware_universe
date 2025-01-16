@@ -45,7 +45,7 @@
 
 class ScanGroundFilterTest;
 
-namespace autoware::ground_segmentation
+namespace autoware::ground_segmentation_universe
 {
 using autoware::vehicle_info_utils::VehicleInfo;
 
@@ -265,6 +265,6 @@ public:
   // for test
   friend ScanGroundFilterTest;
 };
-}  // namespace autoware::ground_segmentation
+}  // namespace autoware::ground_segmentation_universe
 
 #endif  // SCAN_GROUND_FILTER__NODE_HPP_

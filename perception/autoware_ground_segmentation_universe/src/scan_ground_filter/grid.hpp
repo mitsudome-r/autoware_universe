@@ -94,7 +94,7 @@ float pseudoTan(const float theta)
 }
 }  // namespace
 
-namespace autoware::ground_segmentation
+namespace autoware::ground_segmentation_universe
 {
 using autoware::universe_utils::ScopedTimeTrack;
 
@@ -498,6 +498,6 @@ private:
   }
 };
 
-}  // namespace autoware::ground_segmentation
+}  // namespace autoware::ground_segmentation_universe
 
 #endif  // SCAN_GROUND_FILTER__GRID_HPP_

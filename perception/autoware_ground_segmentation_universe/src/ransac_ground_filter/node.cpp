@@ -70,7 +70,7 @@ geometry_msgs::msg::Pose getDebugPose(const Eigen::Affine3d & plane_affine)
 }
 }  // namespace
 
-namespace autoware::ground_segmentation
+namespace autoware::ground_segmentation_universe
 {
 PlaneBasis getPlaneBasis(const Eigen::Vector3d & plane_normal)
 {
@@ -403,7 +403,7 @@ rcl_interfaces::msg::SetParametersResult RANSACGroundFilterComponent::paramCallb
   return result;
 }
 
-}  // namespace autoware::ground_segmentation
+}  // namespace autoware::ground_segmentation_universe
 
 #include <rclcpp_components/register_node_macro.hpp>
-RCLCPP_COMPONENTS_REGISTER_NODE(autoware::ground_segmentation::RANSACGroundFilterComponent)
+RCLCPP_COMPONENTS_REGISTER_NODE(autoware::ground_segmentation_universe::RANSACGroundFilterComponent)

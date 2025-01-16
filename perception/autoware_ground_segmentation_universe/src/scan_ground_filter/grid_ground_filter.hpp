@@ -31,7 +31,7 @@
 #include <utility>
 #include <vector>
 
-namespace autoware::ground_segmentation
+namespace autoware::ground_segmentation_universe
 {
 using PointCloud2ConstPtr = sensor_msgs::msg::PointCloud2::ConstSharedPtr;
 
@@ -216,6 +216,6 @@ private:
   void classify(pcl::PointIndices & out_no_ground_indices);
 };
 
-}  // namespace autoware::ground_segmentation
+}  // namespace autoware::ground_segmentation_universe
 
 #endif  // SCAN_GROUND_FILTER__GRID_GROUND_FILTER_HPP_

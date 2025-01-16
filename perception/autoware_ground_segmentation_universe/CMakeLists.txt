@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(autoware_ground_segmentation)
+project(autoware_ground_segmentation_universe)
 
 find_package(autoware_cmake REQUIRED)
 autoware_package()
@@ -44,17 +44,17 @@ endif()
 # ========== Ground Filter ==========
 # -- Ray Ground Filter --
 rclcpp_components_register_node(${PROJECT_NAME}
-  PLUGIN "autoware::ground_segmentation::RayGroundFilterComponent"
+  PLUGIN "autoware::ground_segmentation_universe::RayGroundFilterComponent"
   EXECUTABLE ray_ground_filter_node)
 
 # -- RANSAC Ground Filter --
 rclcpp_components_register_node(${PROJECT_NAME}
-  PLUGIN "autoware::ground_segmentation::RANSACGroundFilterComponent"
+  PLUGIN "autoware::ground_segmentation_universe::RANSACGroundFilterComponent"
   EXECUTABLE ransac_ground_filter_node)
 
 # -- Scan Ground Filter --
 rclcpp_components_register_node(${PROJECT_NAME}
-  PLUGIN "autoware::ground_segmentation::ScanGroundFilterComponent"
+  PLUGIN "autoware::ground_segmentation_universe::ScanGroundFilterComponent"
   EXECUTABLE scan_ground_filter_node)
 
 
@@ -105,7 +105,7 @@ if(BUILD_TESTING)
     test/test_ransac_ground_filter.cpp
   )
   target_link_libraries(test_ransac_ground_filter
-    autoware_ground_segmentation
+    autoware_ground_segmentation_universe
     ${YAML_CPP_LIBRARIES})
 
 endif()

@@ -116,8 +116,8 @@ class GroundSegmentationPipeline:
 
         components.append(
             ComposableNode(
-                package="autoware_ground_segmentation",
-                plugin="autoware::ground_segmentation::" + ground_segmentation_plugin_name,
+                package="autoware_ground_segmentation_universe",
+                plugin="autoware::ground_segmentation_universe::" + ground_segmentation_plugin_name,
                 name=f"{lidar_name}_ground_filter",
                 remappings=[
                     ("input", f"{lidar_name}/range_cropped/pointcloud"),
@@ -209,8 +209,8 @@ class GroundSegmentationPipeline:
 
         components.append(
             ComposableNode(
-                package="autoware_ground_segmentation",
-                plugin="autoware::ground_segmentation::" + "RANSACGroundFilterComponent",
+                package="autoware_ground_segmentation_universe",
+                plugin="autoware::ground_segmentation_universe::" + "RANSACGroundFilterComponent",
                 name="ransac_ground_filter",
                 namespace="plane_fitting",
                 remappings=[
@@ -268,8 +268,8 @@ class GroundSegmentationPipeline:
 
         components.append(
             ComposableNode(
-                package="autoware_ground_segmentation",
-                plugin="autoware::ground_segmentation::" + ground_segmentation_plugin_name,
+                package="autoware_ground_segmentation_universe",
+                plugin="autoware::ground_segmentation_universe::" + ground_segmentation_plugin_name,
                 name="common_ground_filter",
                 remappings=[
                     ("input", "range_cropped/pointcloud"),
