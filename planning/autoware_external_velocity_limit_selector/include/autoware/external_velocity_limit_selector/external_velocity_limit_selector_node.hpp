@@ -22,6 +22,10 @@
 #include <tier4_planning_msgs/msg/velocity_limit.hpp>
 #include <tier4_planning_msgs/msg/velocity_limit_clear_command.hpp>
 
+#include <autoware_internal_planning_msgs/msg/velocity_limit.hpp>
+#include <autoware_internal_planning_msgs/msg/velocity_limit_clear_command.hpp>
+#include <autoware_internal_planning_msgs/msg/velocity_limit_constraints.hpp>
+
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -34,6 +38,11 @@ using tier4_planning_msgs::msg::VelocityLimit;
 using tier4_planning_msgs::msg::VelocityLimitClearCommand;
 using tier4_planning_msgs::msg::VelocityLimitConstraints;
 
+using VelocityLimitPlanning = autoware_internal_planning_msgs::msg::VelocityLimit;
+using VelocityLimitClearCommandPlanning = autoware_internal_planning_msgs::msg::VelocityLimitClearCommand;
+using VelocityLimitConstraintsPlanning = autoware_internal_planning_msgs::msg::VelocityLimitConstraints;
+
+
 using VelocityLimitTable = std::unordered_map<std::string, VelocityLimit>;
 
 class ExternalVelocityLimitSelectorNode : public rclcpp::Node
@@ -43,7 +52,9 @@ public:
 
   void onVelocityLimitFromAPI(const VelocityLimit::ConstSharedPtr msg);
   void onVelocityLimitFromInternal(const VelocityLimit::ConstSharedPtr msg);
+  void onVelocityLimitFromPlanning(const VelocityLimitPlanning::ConstSharedPtr msg);
   void onVelocityLimitClearCommand(const VelocityLimitClearCommand::ConstSharedPtr msg);
+  void onVelocityLimitClearFromPlanning(const VelocityLimitClearCommandPlanning::ConstSharedPtr msg);
 
 private:
   rclcpp::Subscription<VelocityLimit>::SharedPtr sub_external_velocity_limit_from_api_;
@@ -55,6 +66,7 @@ private:
   void publishVelocityLimit(const VelocityLimit & velocity_limit);
   void setVelocityLimitFromAPI(const VelocityLimit & velocity_limit);
   void setVelocityLimitFromInternal(const VelocityLimit & velocity_limit);
+  void setVelocityLimitFromPlanning(const VelocityLimitPlanning & velocity_limit);
   void clearVelocityLimit(const std::string & sender);
   void updateVelocityLimit();
   void publishDebugString();

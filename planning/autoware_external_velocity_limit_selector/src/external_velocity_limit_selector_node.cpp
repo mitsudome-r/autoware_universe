@@ -127,9 +127,17 @@ ExternalVelocityLimitSelectorNode::ExternalVelocityLimitSelectorNode(
     "input/velocity_limit_from_internal", rclcpp::QoS{10}.transient_local(),
     std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitFromInternal, this, _1));
 
+  sub_velocity_limit_from_planning_ = this->create_subscription<VelocityLimitPlanning>(
+    "input/velocity_limit_from_planning", rclcpp::QoS{10}.transient_local(),
+    std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitFromPlanning, this, _1));
+
   sub_velocity_limit_clear_command_ = this->create_subscription<VelocityLimitClearCommand>(
     "input/velocity_limit_clear_command_from_internal", rclcpp::QoS{10}.transient_local(),
     std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitClearCommand, this, _1));
+
+  sub_velocity_limit_constraints_from_planning_ = this->create_subscription<VelocityLimitConstraintsPlanning>(
+    "input/velocity_limit_constraints_from_planning", rclcpp::QoS{10}.transient_local(),
+    std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitConstraintsFromPlanning, this, _1));
 
   // Output
   pub_external_velocity_limit_ =
@@ -159,6 +167,18 @@ void ExternalVelocityLimitSelectorNode::onVelocityLimitFromInternal(
 {
   RCLCPP_DEBUG(get_logger(), "set velocity limit. sender:%s", msg->sender.c_str());
   setVelocityLimitFromInternal(*msg);
+
+  const auto velocity_limit = getCurrentVelocityLimit();
+  publishVelocityLimit(velocity_limit);
+
+  publishDebugString();
+}
+
+void ExternalVelocityLimitSelectorNode::onVelocityLimitFromPlanning(
+  const VelocityLimitPlanning::ConstSharedPtr msg)
+{
+  RCLCPP_DEBUG(get_logger(), "set velocity limit. sender:%s", msg->sender.c_str());
+  setVelocityLimitFromPlanning(*msg);
 
   const auto velocity_limit = getCurrentVelocityLimit();
   publishVelocityLimit(velocity_limit);
@@ -211,6 +231,21 @@ void ExternalVelocityLimitSelectorNode::setVelocityLimitFromAPI(
 
 void ExternalVelocityLimitSelectorNode::setVelocityLimitFromInternal(
   const VelocityLimit & velocity_limit)
+{
+  const auto sender = velocity_limit.sender;
+
+  if (velocity_limit_table_.count(sender) == 0) {
+    velocity_limit_table_.emplace(sender, velocity_limit);
+  } else {
+    velocity_limit_table_.at(sender) = velocity_limit;
+    RCLCPP_DEBUG(get_logger(), "overwrite velocity limit. sender:%s", sender.c_str());
+  }
+
+  updateVelocityLimit();
+}
+
+void ExternalVelocityLimitSelectorNode::setVelocityLimitFromPlanning(
+  const VelocityLimitPlanning & velocity_limit)
 {
   const auto sender = velocity_limit.sender;
 
