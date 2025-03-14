@@ -20,6 +20,21 @@
 #include <unordered_map>
 #include <utility>
 
+namespace{
+  autoware_internal_planning_msgs::msg::VelocityLimit convertTierIVMsgToInternalMsg(const tier4_planning_msgs::msg::VelocityLimit & tier4_msg){
+    autoware_internal_planning_msgs::msg::VelocityLimit internal_msg;
+    internal_msg.stamp = tier4_msg.stamp;
+    internal_msg.max_velocity = tier4_msg.max_velocity;
+    internal_msg.use_constraints = tier4_msg.use_constraints;
+    internal_msg.constraints.max_acceleration = tier4_msg.constraints.max_acceleration;
+    internal_msg.constraints.min_acceleration = tier4_msg.constraints.min_acceleration;
+    internal_msg.constraints.max_jerk = tier4_msg.constraints.max_jerk;
+    internal_msg.constraints.min_jerk = tier4_msg.constraints.min_jerk;
+    internal_msg.sender = tier4_msg.sender;
+    return internal_msg;
+  }
+}
+
 namespace autoware::external_velocity_limit_selector
 {
 
@@ -119,25 +134,25 @@ ExternalVelocityLimitSelectorNode::ExternalVelocityLimitSelectorNode(
 {
   using std::placeholders::_1;
   // Input
-  sub_external_velocity_limit_from_api_ = this->create_subscription<VelocityLimit>(
+  sub_external_velocity_limit_from_api_ = this->create_subscription<VelocityLimitTierIV>(
     "input/velocity_limit_from_api", rclcpp::QoS{1}.transient_local(),
     std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitFromAPI, this, _1));
 
-  sub_external_velocity_limit_from_internal_ = this->create_subscription<VelocityLimit>(
+  sub_external_velocity_limit_from_internal_ = this->create_subscription<VelocityLimitTierIV>(
     "input/velocity_limit_from_internal", rclcpp::QoS{10}.transient_local(),
     std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitFromInternal, this, _1));
 
-  sub_velocity_limit_from_planning_ = this->create_subscription<VelocityLimitPlanning>(
+  sub_external_velocity_limit_from_planning_ = this->create_subscription<VelocityLimit>(
     "input/velocity_limit_from_planning", rclcpp::QoS{10}.transient_local(),
     std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitFromPlanning, this, _1));
 
-  sub_velocity_limit_clear_command_ = this->create_subscription<VelocityLimitClearCommand>(
+  sub_velocity_limit_clear_command_ = this->create_subscription<VelocityLimitClearCommandTierIV>(
     "input/velocity_limit_clear_command_from_internal", rclcpp::QoS{10}.transient_local(),
     std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitClearCommand, this, _1));
 
-  sub_velocity_limit_constraints_from_planning_ = this->create_subscription<VelocityLimitConstraintsPlanning>(
-    "input/velocity_limit_constraints_from_planning", rclcpp::QoS{10}.transient_local(),
-    std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitConstraintsFromPlanning, this, _1));
+  sub_velocity_limit_clear_command_from_planning_ = this->create_subscription<VelocityLimitClearCommand>(
+    "input/velocity_limit_clear_command_from_planning", rclcpp::QoS{10}.transient_local(),
+    std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitClearCommandFromPlanning, this, _1));
 
   // Output
   pub_external_velocity_limit_ =
@@ -151,10 +166,10 @@ ExternalVelocityLimitSelectorNode::ExternalVelocityLimitSelectorNode(
 }
 
 void ExternalVelocityLimitSelectorNode::onVelocityLimitFromAPI(
-  const VelocityLimit::ConstSharedPtr msg)
+  const VelocityLimitTierIV::ConstSharedPtr msg)
 {
   RCLCPP_DEBUG(get_logger(), "set velocity limit. sender:%s", msg->sender.c_str());
-  setVelocityLimitFromAPI(*msg);
+  setVelocityLimitFromAPI(convertTierIVMsgToInternalMsg(*msg));
 
   const auto velocity_limit = getCurrentVelocityLimit();
   publishVelocityLimit(velocity_limit);
@@ -163,10 +178,10 @@ void ExternalVelocityLimitSelectorNode::onVelocityLimitFromAPI(
 }
 
 void ExternalVelocityLimitSelectorNode::onVelocityLimitFromInternal(
-  const VelocityLimit::ConstSharedPtr msg)
+  const VelocityLimitTierIV::ConstSharedPtr msg)
 {
   RCLCPP_DEBUG(get_logger(), "set velocity limit. sender:%s", msg->sender.c_str());
-  setVelocityLimitFromInternal(*msg);
+  setVelocityLimitFromInternal(convertTierIVMsgToInternalMsg(*msg));
 
   const auto velocity_limit = getCurrentVelocityLimit();
   publishVelocityLimit(velocity_limit);
@@ -175,7 +190,7 @@ void ExternalVelocityLimitSelectorNode::onVelocityLimitFromInternal(
 }
 
 void ExternalVelocityLimitSelectorNode::onVelocityLimitFromPlanning(
-  const VelocityLimitPlanning::ConstSharedPtr msg)
+  const VelocityLimit::ConstSharedPtr msg)
 {
   RCLCPP_DEBUG(get_logger(), "set velocity limit. sender:%s", msg->sender.c_str());
   setVelocityLimitFromPlanning(*msg);
@@ -187,6 +202,21 @@ void ExternalVelocityLimitSelectorNode::onVelocityLimitFromPlanning(
 }
 
 void ExternalVelocityLimitSelectorNode::onVelocityLimitClearCommand(
+  const VelocityLimitClearCommandTierIV::ConstSharedPtr msg)
+{
+  if (!msg->command) {
+    return;
+  }
+
+  clearVelocityLimit(msg->sender);
+
+  const auto velocity_limit = getCurrentVelocityLimit();
+  publishVelocityLimit(velocity_limit);
+
+  publishDebugString();
+}
+
+void ExternalVelocityLimitSelectorNode::onVelocityLimitClearCommandFromPlanning(
   const VelocityLimitClearCommand::ConstSharedPtr msg)
 {
   if (!msg->command) {
@@ -200,6 +230,7 @@ void ExternalVelocityLimitSelectorNode::onVelocityLimitClearCommand(
 
   publishDebugString();
 }
+
 
 void ExternalVelocityLimitSelectorNode::publishVelocityLimit(const VelocityLimit & velocity_limit)
 {
@@ -245,7 +276,7 @@ void ExternalVelocityLimitSelectorNode::setVelocityLimitFromInternal(
 }
 
 void ExternalVelocityLimitSelectorNode::setVelocityLimitFromPlanning(
-  const VelocityLimitPlanning & velocity_limit)
+  const VelocityLimit & velocity_limit)
 {
   const auto sender = velocity_limit.sender;
 

@@ -112,7 +112,7 @@ private:
     this, "~/input/lateral_offset"};
   autoware_utils::InterProcessPollingSubscriber<OperationModeState> operation_mode_subscriber_{
     this, "/system/operation_mode/state", rclcpp::QoS{1}.transient_local()};
-  autoware_utils::InterProcessPollingSubscriber<tier4_planning_msgs::msg::VelocityLimit>
+  autoware_utils::InterProcessPollingSubscriber<autoware_internal_planning_msgs::msg::VelocityLimit>
     external_limit_max_velocity_subscriber_{this, "/planning/scenario_planning/max_velocity"};
 
   // publisher
@@ -157,7 +157,7 @@ private:
   void onOperationMode(const OperationModeState::ConstSharedPtr msg);
   void onLateralOffset(const LateralOffset::ConstSharedPtr msg);
   void on_external_velocity_limiter(
-    const tier4_planning_msgs::msg::VelocityLimit::ConstSharedPtr msg);
+    const autoware_internal_planning_msgs::msg::VelocityLimit::ConstSharedPtr msg);
 
   SetParametersResult onSetParam(const std::vector<rclcpp::Parameter> & parameters);
 

@@ -149,8 +149,8 @@
         <remap from="~/input/virtual_traffic_light_states" to="/perception/virtual_traffic_light_states"/>
         <remap from="~/input/occupancy_grid" to="/perception/occupancy_grid_map/map"/>
         <remap from="~/output/trajectory" to="motion_velocity_planner/trajectory"/>
-        <remap from="~/output/velocity_limit" to="/planning/scenario_planning/max_velocity_candidates"/>
-        <remap from="~/output/clear_velocity_limit" to="/planning/scenario_planning/clear_velocity_limit"/>
+        <remap from="~/output/velocity_limit" to="/planning/scenario_planning/max_velocity_candidates_from_planning"/>
+        <remap from="~/output/clear_velocity_limit" to="/planning/scenario_planning/clear_velocity_limit_from_planning"/>
         <remap from="~/output/stop_reasons" to="/planning/scenario_planning/status/stop_reasons"/>
         <remap from="~/output/velocity_factors" to="/planning/velocity_factors/motion_velocity_planner"/>
         <!-- params -->
@@ -187,8 +187,8 @@
           <remap from="~/input/pointcloud" to="/perception/obstacle_segmentation/pointcloud"/>
           <remap from="~/output/trajectory" to="$(var interface_output_topic)"/>
           <remap from="~/output/stop_reasons" to="/planning/scenario_planning/status/stop_reasons"/>
-          <remap from="~/output/velocity_limit" to="/planning/scenario_planning/max_velocity_candidates"/>
-          <remap from="~/output/clear_velocity_limit" to="/planning/scenario_planning/clear_velocity_limit"/>
+          <remap from="~/output/velocity_limit" to="/planning/scenario_planning/max_velocity_candidates_from_planning"/>
+          <remap from="~/output/clear_velocity_limit" to="/planning/scenario_planning/clear_velocity_limit_from_planning"/>
           <!-- params -->
           <param from="$(var common_param_path)"/>
           <param from="$(var vehicle_param_file)"/>
@@ -211,8 +211,8 @@
           <remap from="~/input/objects" to="/perception/object_recognition/objects"/>
           <remap from="~/output/trajectory" to="$(var interface_output_topic)"/>
           <remap from="~/output/stop_reasons" to="/planning/scenario_planning/status/stop_reasons"/>
-          <remap from="~/output/max_velocity" to="/planning/scenario_planning/max_velocity_candidates"/>
-          <remap from="~/output/velocity_limit_clear_command" to="/planning/scenario_planning/clear_velocity_limit"/>
+          <remap from="~/output/max_velocity" to="/planning/scenario_planning/max_velocity_candidates_from_planning"/>
+          <remap from="~/output/velocity_limit_clear_command" to="/planning/scenario_planning/clear_velocity_limit_from_planning"/>
           <!-- params -->
           <param from="$(var common_param_path)"/>
           <param from="$(var vehicle_param_file)"/>
@@ -247,8 +247,8 @@
         <remap from="~/input/odometry" to="/localization/kinematic_state"/>
         <remap from="~/input/objects" to="/perception/object_recognition/objects"/>
         <remap from="~/input/pointcloud" to="/perception/obstacle_segmentation/pointcloud"/>
-        <remap from="~/output/max_velocity" to="/planning/scenario_planning/max_velocity_candidates"/>
-        <remap from="~/output/velocity_limit_clear_command" to="/planning/scenario_planning/clear_velocity_limit"/>
+        <remap from="~/output/max_velocity" to="/planning/scenario_planning/max_velocity_candidates_from_planning"/>
+        <remap from="~/output/velocity_limit_clear_command" to="/planning/scenario_planning/clear_velocity_limit_from_planning"/>
         <remap from="~/output/stop_reasons" to="/planning/scenario_planning/status/stop_reasons"/>
         <remap from="~/output/no_start_reason" to="/planning/scenario_planning/status/no_start_reason"/>
         <!-- params -->

@@ -6,7 +6,9 @@
   <!-- input/output -->
   <arg name="input_velocity_limit_from_api" default="/planning/scenario_planning/max_velocity_default"/>
   <arg name="input_velocity_limit_from_internal" default="/planning/scenario_planning/max_velocity_candidates"/>
+  <arg name="input_velocity_limit_from_planning" default="/planning/scenario_planning/max_velocity_candidates_from_planning"/>
   <arg name="input_velocity_limit_clear_command_from_internal" default="/planning/scenario_planning/clear_velocity_limit"/>
+  <arg name="input_velocity_limit_clear_command_from_planning" default="/planning/scenario_planning/clear_velocity_limit_from_planning"/>
   <arg name="output_velocity_limit_from_selector" default="/planning/scenario_planning/max_velocity"/>
   <arg name="output_debug_string" default="/planning/scenario_planning/external_velocity_limit_selector/debug"/>
 
@@ -15,7 +17,9 @@
     <param from="$(var param_path)"/>
     <remap from="input/velocity_limit_from_api" to="$(var input_velocity_limit_from_api)"/>
     <remap from="input/velocity_limit_from_internal" to="$(var input_velocity_limit_from_internal)"/>
+    <remap from="input/velocity_limit_from_planning" to="$(var input_velocity_limit_from_planning)"/>
     <remap from="input/velocity_limit_clear_command_from_internal" to="$(var input_velocity_limit_clear_command_from_internal)"/>
+    <remap from="input/velocity_limit_clear_command_from_planning" to="$(var input_velocity_limit_clear_command_from_planning)"/>
     <remap from="output/external_velocity_limit" to="$(var output_velocity_limit_from_selector)"/>
     <remap from="output/debug" to="$(var output_debug_string)"/>
   </node>

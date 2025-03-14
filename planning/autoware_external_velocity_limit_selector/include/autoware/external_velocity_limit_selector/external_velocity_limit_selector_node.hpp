@@ -34,13 +34,13 @@ namespace autoware::external_velocity_limit_selector
 {
 
 using autoware_internal_debug_msgs::msg::StringStamped;
-using tier4_planning_msgs::msg::VelocityLimit;
-using tier4_planning_msgs::msg::VelocityLimitClearCommand;
-using tier4_planning_msgs::msg::VelocityLimitConstraints;
+using VelocityLimitTierIV = tier4_planning_msgs::msg::VelocityLimit;
+using VelocityLimitClearCommandTierIV = tier4_planning_msgs::msg::VelocityLimitClearCommand;
+using VelocityLimitConstraintsTierIV = tier4_planning_msgs::msg::VelocityLimitConstraints;
 
-using VelocityLimitPlanning = autoware_internal_planning_msgs::msg::VelocityLimit;
-using VelocityLimitClearCommandPlanning = autoware_internal_planning_msgs::msg::VelocityLimitClearCommand;
-using VelocityLimitConstraintsPlanning = autoware_internal_planning_msgs::msg::VelocityLimitConstraints;
+using autoware_internal_planning_msgs::msg::VelocityLimit;
+using autoware_internal_planning_msgs::msg::VelocityLimitClearCommand;
+using autoware_internal_planning_msgs::msg::VelocityLimitConstraints;
 
 
 using VelocityLimitTable = std::unordered_map<std::string, VelocityLimit>;
@@ -50,23 +50,25 @@ class ExternalVelocityLimitSelectorNode : public rclcpp::Node
 public:
   explicit ExternalVelocityLimitSelectorNode(const rclcpp::NodeOptions & node_options);
 
-  void onVelocityLimitFromAPI(const VelocityLimit::ConstSharedPtr msg);
-  void onVelocityLimitFromInternal(const VelocityLimit::ConstSharedPtr msg);
-  void onVelocityLimitFromPlanning(const VelocityLimitPlanning::ConstSharedPtr msg);
-  void onVelocityLimitClearCommand(const VelocityLimitClearCommand::ConstSharedPtr msg);
-  void onVelocityLimitClearFromPlanning(const VelocityLimitClearCommandPlanning::ConstSharedPtr msg);
+  void onVelocityLimitFromAPI(const VelocityLimitTierIV::ConstSharedPtr msg);
+  void onVelocityLimitFromInternal(const VelocityLimitTierIV::ConstSharedPtr msg);
+  void onVelocityLimitFromPlanning(const VelocityLimit::ConstSharedPtr msg);
+  void onVelocityLimitClearCommand(const VelocityLimitClearCommandTierIV::ConstSharedPtr msg);
+  void onVelocityLimitClearCommandFromPlanning(const VelocityLimitClearCommand::ConstSharedPtr msg);
 
 private:
-  rclcpp::Subscription<VelocityLimit>::SharedPtr sub_external_velocity_limit_from_api_;
-  rclcpp::Subscription<VelocityLimit>::SharedPtr sub_external_velocity_limit_from_internal_;
-  rclcpp::Subscription<VelocityLimitClearCommand>::SharedPtr sub_velocity_limit_clear_command_;
+  rclcpp::Subscription<VelocityLimitTierIV>::SharedPtr sub_external_velocity_limit_from_api_;
+  rclcpp::Subscription<VelocityLimitTierIV>::SharedPtr sub_external_velocity_limit_from_internal_;
+  rclcpp::Subscription<VelocityLimit>::SharedPtr sub_external_velocity_limit_from_planning_;
+  rclcpp::Subscription<VelocityLimitClearCommandTierIV>::SharedPtr sub_velocity_limit_clear_command_;
+  rclcpp::Subscription<VelocityLimitClearCommand>::SharedPtr sub_velocity_limit_clear_command_from_planning_;
   rclcpp::Publisher<VelocityLimit>::SharedPtr pub_external_velocity_limit_;
   rclcpp::Publisher<StringStamped>::SharedPtr pub_debug_string_;
 
   void publishVelocityLimit(const VelocityLimit & velocity_limit);
   void setVelocityLimitFromAPI(const VelocityLimit & velocity_limit);
   void setVelocityLimitFromInternal(const VelocityLimit & velocity_limit);
-  void setVelocityLimitFromPlanning(const VelocityLimitPlanning & velocity_limit);
+  void setVelocityLimitFromPlanning(const VelocityLimit & velocity_limit);
   void clearVelocityLimit(const std::string & sender);
   void updateVelocityLimit();
   void publishDebugString();
