@@ -138,6 +138,7 @@ private:
   bool is_engaged_;
   bool is_system_emergency_ = false;
   bool is_external_emergency_stop_ = false;
+  bool is_comfortable_stop_ = false;
   double current_steer_ = 0;
   GateMode current_gate_mode_;
   MrmState current_mrm_state_;

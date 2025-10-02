@@ -471,6 +471,11 @@ void VehicleCmdGate::onTimer()
       hazard_light = auto_commands_.hazard_light;
       gear = auto_commands_.gear;
 
+      // Overwrite hazard light when comfortable stop is requested
+      if (is_comfortable_stop_) {
+        hazard_light.command = emergency_commands_.hazard_light.command;
+      }
+
       // Don't send turn signal when autoware is not engaged
       if (!is_engaged_) {
         turn_indicator.command = TurnIndicatorsCommand::NO_COMMAND;
@@ -787,6 +792,11 @@ void VehicleCmdGate::onMrmState(MrmState::ConstSharedPtr msg)
      msg->state == MrmState::MRM_FAILED) &&
     (msg->behavior == MrmState::EMERGENCY_STOP);
   emergency_state_heartbeat_received_time_ = std::make_shared<rclcpp::Time>(this->now());
+
+  is_comfortable_stop_ =
+    (msg->state == MrmState::MRM_OPERATING || msg->state == MrmState::MRM_SUCCEEDED ||
+     msg->state == MrmState::MRM_FAILED) &&
+    (msg->behavior == MrmState::COMFORTABLE_STOP);
 }
 
 double VehicleCmdGate::getDt()
