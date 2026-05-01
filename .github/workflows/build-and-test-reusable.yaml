@@ -138,7 +138,6 @@ jobs:
           build-depends-repos: build_depends.repos
           cache-key-element: ${{ env.BUILD_TYPE_CUDA_STATE }}
           build-pre-command: ${{ inputs.build-pre-command }}
-          underlay-workspace: /opt/autoware
 
       - name: Show ccache stats after build
         if: ${{ inputs.pull-ccache || inputs.push-ccache }}
@@ -161,7 +160,6 @@ jobs:
           rosdistro: ${{ inputs.rosdistro }}
           target-packages: ${{ steps.get-self-packages.outputs.self-packages }}
           build-depends-repos: build_depends.repos
-          underlay-workspace: /opt/autoware
 
       - name: Upload coverage to CodeCov
         if: ${{ steps.test.outputs.coverage-report-files != '' && inputs.upload-coverage }}
