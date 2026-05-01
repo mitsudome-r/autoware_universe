@@ -5,8 +5,6 @@ find_package(autoware_cmake REQUIRED)
 find_package(autoware_agnocast_wrapper REQUIRED)
 autoware_package()
 
-# TRIGGER WORKFLOW
-
 # Suppress CGAL warning
 set(CGAL_DATA_DIR ".")
 
